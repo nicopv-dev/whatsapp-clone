@@ -15,6 +15,7 @@ export default function MainLayout() {
   const [messagesSelectedChat, setMessagesSelectedChat] = useState<IMessage[]>(
     []
   );
+
   // set chat from SideBarChats
   const onChangeSelectedChat = (chat: chat): void => {
     setChatSelected(chat);

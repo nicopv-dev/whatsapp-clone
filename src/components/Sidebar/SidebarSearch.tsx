@@ -64,7 +64,7 @@ export default function SidebarSearch(props) {
                   {items.length > 0 && (
                     <ul {...autocomplete.getListProps()}>
                       {items.map((item) => (
-                        <AutocompleteItem key={index} {...item} />
+                        <AutocompleteItem key={item._id} {...item} />
                       ))}
                     </ul>
                   )}

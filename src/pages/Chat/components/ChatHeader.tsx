@@ -3,9 +3,18 @@ import { IoSearchSharp, IoEllipsisVertical } from "react-icons/io5";
 interface IChatHeaderProps {
   avatarUrl: string;
   name: string;
+  onChangeOpenSearchMessage: () => void;
 }
 
-export default function ChatHeader({ avatarUrl, name }: IChatHeaderProps) {
+export default function ChatHeader({
+  avatarUrl,
+  name,
+  onChangeOpenSearchMessage,
+}: IChatHeaderProps) {
+  const openSearchMessage = () => {
+    onChangeOpenSearchMessage();
+  };
+
   return (
     <header className="bg-gray flex items-center justify-between py-2 px-6">
       {/* chat info */}
@@ -22,7 +31,9 @@ export default function ChatHeader({ avatarUrl, name }: IChatHeaderProps) {
 
       {/* chat icons */}
       <div className="flex gap-4">
-        <IoSearchSharp className="text-dark w-5 h-5" />
+        <button onClick={openSearchMessage}>
+          <IoSearchSharp className="text-dark w-5 h-5" />
+        </button>
         <IoEllipsisVertical className="text-dark w-5 h-5" />
       </div>
     </header>
