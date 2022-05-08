@@ -51,7 +51,7 @@ export default function MainLayout() {
     <div className="grid place-items-center h-screen">
       <div className="min-h-[95vh] bg-light w-full md:w-[90%] flex shadow-2xl">
         {/* Sidebar */}
-        <div className="max-h-[95vh] flex-[0.3_1_0%] flex flex-col">
+        <div className="max-h-[95vh] flex-[0.3_1_0%] hidden md:flex flex-col">
           <Sidebar
             chats={chats}
             onChangeSelectedChat={onChangeSelectedChat}
@@ -61,7 +61,7 @@ export default function MainLayout() {
           />
         </div>
         {/* Chats / Home */}
-        <div className="max-h-[95vh] flex-[0.7_1_0%] bg-grayLight">
+        <div className="max-h-[95vh] flex-1 md:flex-[0.7_1_0%] bg-grayLight">
           {!chatSelected ? (
             <Home />
           ) : (

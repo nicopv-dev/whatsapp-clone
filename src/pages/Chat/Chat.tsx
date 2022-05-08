@@ -24,7 +24,7 @@ export default function Chat({
 }: IChatProps) {
   const [chatTitle, setChatTitle] = useState<string>("");
   const user = useSelector((state) => state.user as IUser);
-  const [openSearchMessage, setOpenSearchMessage] = useState<boolean>(true);
+  const [openSearchMessage, setOpenSearchMessage] = useState<boolean>(false);
 
   const findChatTitle = (): void => {
     setChatTitle(chat.members.find((member) => member._id !== user._id)?.name);

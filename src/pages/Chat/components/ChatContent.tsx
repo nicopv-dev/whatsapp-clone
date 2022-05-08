@@ -20,7 +20,7 @@ const ChatContent: FunctionComponent<IChatContentProps> = ({
   const user: IUser = useSelector((state) => state.user);
 
   return (
-    <div className="flex-1 bg-chat bg-center bg-no-repeat bg-cover overflow-y-auto py-4 px-[80px] flex flex-col gap-2">
+    <div className="flex-1 bg-chat bg-center bg-no-repeat bg-cover overflow-y-auto py-4 px-10 md:px-[80px] flex flex-col gap-2">
       {messages.map((item, index) => (
         <Message key={index} message={item} user={user} />
       ))}

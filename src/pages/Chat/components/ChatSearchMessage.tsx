@@ -1,3 +1,4 @@
+import moment from "moment";
 import React, { useState } from "react";
 import { IoClose, IoSearchSharp } from "react-icons/io5";
 import { IChat, IMessage } from "../../../types";
@@ -6,6 +7,10 @@ interface IChatSearchMessageProps {
   onChangeOpenSearchMessage: () => void;
   chat: IChat;
   messages: IMessage[];
+}
+
+interface ISearchItemProps {
+  message: IMessage;
 }
 
 export default function ChatSearchMessage({
@@ -24,8 +29,8 @@ export default function ChatSearchMessage({
 
   const searchMessages = (e: React.FormEvent<HTMLInputElement>): void => {
     setInputSearch(e.target.value);
-    const newResults = messages.filter(
-      (message) => message.text === e.target.value
+    const newResults = messages.filter((message) =>
+      message.text.toLocaleLowerCase().includes(e.target.value)
     );
     setResults(newResults);
   };
@@ -38,7 +43,11 @@ export default function ChatSearchMessage({
         </button>
         <h4 className="ml-2">Buscar mensaje</h4>
       </header>
-      <div className="bg-light py-2 px-4">
+      <div
+        className={`bg-light py-2 px-4 border-b border-b-gray transition-all duration-300 ${
+          inputSearch ? "shadow-sm" : "shadow-none"
+        }`}
+      >
         <form className="flex items-center gap-4 py-1 px-4 bg-gray rounded-md">
           <IoSearchSharp className="w-5 h-5" />
           <input
@@ -52,14 +61,28 @@ export default function ChatSearchMessage({
       </div>
 
       {inputSearch ? (
-        <div className="h-full flex flex-col py-2 px-4">
+        <div className="h-full flex flex-col pb-2">
           {results.map((item, index) => (
-            <section key={index}>{item.text}</section>
+            <SearchItem key={index} message={item} />
           ))}
         </div>
       ) : (
-        <p>Buscar mensaje en el Chat</p>
+        <p className="text-center font-light">Buscar mensaje en el Chat</p>
       )}
     </div>
   );
 }
+
+const SearchItem = ({ message }: ISearchItemProps) => {
+  return (
+    <section
+      className="bg-light border-b border-b-gray py-2 px-4 hover:cursor-pointer transition duration-200 hover:bg-gray"
+      onClick={() => {}}
+    >
+      <span className="text-dark text-[10px]">
+        {moment(message.createdAt).format("DD/MM/YYYY")}
+      </span>
+      <p className="text-dark m-0">{message.text}</p>
+    </section>
+  );
+};
