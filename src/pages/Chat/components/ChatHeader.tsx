@@ -1,14 +1,13 @@
 import { IoSearchSharp, IoEllipsisVertical } from "react-icons/io5";
+import { IUser } from "../../../types";
 
 interface IChatHeaderProps {
-  avatarUrl: string;
-  name: string;
+  user: IUser;
   onChangeOpenSearchMessage: () => void;
 }
 
 export default function ChatHeader({
-  avatarUrl,
-  name,
+  user,
   onChangeOpenSearchMessage,
 }: IChatHeaderProps) {
   const openSearchMessage = () => {
@@ -21,12 +20,15 @@ export default function ChatHeader({
       <div className="flex items-center gap-3">
         <div className="w-10">
           <img
-            src={avatarUrl}
+            src={
+              user.avatarUrl ||
+              "https://avatars0.githubusercontent.com/u/12097?s=460&v=4"
+            }
             alt="Avatar User"
             className="w-full object-cover aspect-1 rounded-full"
           />
         </div>
-        <h3>{name}</h3>
+        <h3>{user.name}</h3>
       </div>
 
       {/* chat icons */}

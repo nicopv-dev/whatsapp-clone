@@ -5,15 +5,14 @@ export const formatDate: string = (createdAt: string) => {
   return moment(createdAt).format("h:mm a");
 };
 
-export const findChatTitle: string = (chat: IChat, user: IUser) =>
-  chat.members.find((member) => member._id !== user._id)?.name;
-
-export const findLastMessage: IMessage = (chat: IChat) => {
-  return chat.messages.slice(-1).pop();
+// find receiver User
+export const findUserReceiver: IUser = (chat: IChat, user: IUser) => {
+  return chat.members.find((member: IUser) => member._id !== user._id);
 };
 
-export const findDateLastMessage: string = (chat: IChat) => {
-  return chat.messages.slice(-1).pop()?.createdAt;
+// find last chat message
+export const findLastMessage: IMessage = (chat: IChat) => {
+  return chat.messages.slice(-1).pop();
 };
 
 export const findMyAvatarUrl: string = (members: IUser[], user: IUser) => {

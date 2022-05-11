@@ -4,6 +4,7 @@ import SidebarHeader from "./SidebarHeader";
 import SidebarSearch from "./SidebarSearch";
 
 export default function Sidebar({
+  chatSelected,
   chats,
   onChangeSelectedChat,
   onChangeUpdateMessagesSelectedChat,
@@ -13,6 +14,7 @@ export default function Sidebar({
       <SidebarHeader />
       <SidebarSearch />
       <SidebarChats
+        chatSelected={chatSelected}
         chats={chats}
         onChangeSelectedChat={onChangeSelectedChat}
         onChangeUpdateMessagesSelectedChat={onChangeUpdateMessagesSelectedChat}

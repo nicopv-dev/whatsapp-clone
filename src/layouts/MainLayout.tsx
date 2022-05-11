@@ -53,6 +53,7 @@ export default function MainLayout() {
         {/* Sidebar */}
         <div className="max-h-[95vh] flex-[0.3_1_0%] hidden md:flex flex-col">
           <Sidebar
+            chatSelected={chatSelected}
             chats={chats}
             onChangeSelectedChat={onChangeSelectedChat}
             onChangeUpdateMessagesSelectedChat={

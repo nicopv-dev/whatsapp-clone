@@ -8,6 +8,7 @@ import ChatSendMessage from "./components/ChatSendMessage";
 import { socket } from "../../config/socket";
 import axios from "../../config/axios";
 import ChatSearchMessage from "./components/ChatSearchMessage";
+import { findUserReceiver } from "../../utils/methods";
 
 interface IChatProps {
   chat: IChat;
@@ -23,6 +24,7 @@ export default function Chat({
   onChangeUpdateMessages,
 }: IChatProps) {
   const [chatTitle, setChatTitle] = useState<string>("");
+  const [userReceiver, setUserReceiver] = useState<IUser>({});
   const user = useSelector((state) => state.user as IUser);
   const [openSearchMessage, setOpenSearchMessage] = useState<boolean>(false);
 
@@ -34,8 +36,9 @@ export default function Chat({
     setOpenSearchMessage(!openSearchMessage);
   };
 
+  // find info receiver user
   useEffect(() => {
-    findChatTitle();
+    setUserReceiver(findUserReceiver(chat, user));
   }, [chat]);
 
   // listening for new message
@@ -68,8 +71,7 @@ export default function Chat({
         } flex flex-col justify-between transition-all duration-300`}
       >
         <ChatHeader
-          avatarUrl="https://avatars0.githubusercontent.com/u/12097?s=460&v=4"
-          name={chatTitle}
+          user={userReceiver}
           onChangeOpenSearchMessage={onChangeOpenSearchMessage}
         />
         <ChatContent chat={chat} messages={messages} />

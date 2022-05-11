@@ -24,6 +24,7 @@ export interface IMessage {
 
 // Interface Components Props
 export interface ISidebarProps {
+  chatSelected?: IChat;
   chats: IChat[];
   onChangeSelectedChat(chat: IChat): void;
   onChangeUpdateMessagesSelectedChat(messages: IMessage): void;
