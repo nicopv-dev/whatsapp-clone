@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { socket } from "../config/socket";
 import { IUser } from "../types";
 
 const initialState: IUser = {
@@ -7,6 +8,7 @@ const initialState: IUser = {
   email: "",
   avatarUrl: "",
   isLoggedIn: false,
+  isConnected: false,
 };
 
 const userSlice = createSlice({
@@ -19,6 +21,7 @@ const userSlice = createSlice({
       state.email = action.payload.email;
       state.avatarUrl = action.payload.avatarUrl;
       state.isLoggedIn = true;
+      state.isConnected = true;
     },
     setSignOutUser: (state) => {
       state._id = "";
@@ -26,6 +29,7 @@ const userSlice = createSlice({
       state.email = "";
       state.avatarUrl = "";
       state.isLoggedIn = false;
+      state.isConnected = false;
     },
   },
 });
@@ -54,6 +58,7 @@ export const fetchLoginUser = () => async (dispatch) => {
     const data = await response.json();
     if (data.success) {
       dispatch(setUserLoginDetails(data.user));
+      await socket.emit("user_connected", data.user);
     }
   } catch (err) {
     console.log(err);

@@ -31,6 +31,7 @@ export default function SidebarChats({
       {chats.length > 0 ? (
         chats.map((chat, index) => (
           <ChatItem
+            key={index}
             chatSelected={chatSelected}
             chat={chat}
             user={user}

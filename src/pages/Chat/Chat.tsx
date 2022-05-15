@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Socket } from "socket.io-client";
-import { IChat, IMessage, IUser } from "../../types";
+import { IChat, IConnectedUser, IMessage, IUser } from "../../types";
 import ChatContent from "./components/ChatContent";
 import ChatHeader from "./components/ChatHeader";
 import ChatSendMessage from "./components/ChatSendMessage";
@@ -15,6 +15,7 @@ interface IChatProps {
   onChangeUpdateChats: () => void;
   messages: IMessage[];
   onChangeUpdateMessages: (newMessage: IMessage) => void;
+  connectedUsers: IConnectedUser[];
 }
 
 export default function Chat({
@@ -22,15 +23,12 @@ export default function Chat({
   onChangeUpdateChats,
   messages,
   onChangeUpdateMessages,
+  connectedUsers,
 }: IChatProps) {
   const [chatTitle, setChatTitle] = useState<string>("");
   const [userReceiver, setUserReceiver] = useState<IUser>({});
   const user = useSelector((state) => state.user as IUser);
   const [openSearchMessage, setOpenSearchMessage] = useState<boolean>(false);
-
-  const findChatTitle = (): void => {
-    setChatTitle(chat.members.find((member) => member._id !== user._id)?.name);
-  };
 
   const onChangeOpenSearchMessage = (): void => {
     setOpenSearchMessage(!openSearchMessage);
@@ -44,6 +42,7 @@ export default function Chat({
   // listening for new message
   useEffect(() => {
     socket.on("receive_message", async (data) => {
+      console.log(data);
       if (data.chatId === chat._id) {
         const newMessage: IMessage = {
           _id: "",
@@ -53,7 +52,6 @@ export default function Chat({
           chat: data.chatId,
         };
         onChangeUpdateMessages(newMessage);
-
         // save message to database
         const response = await axios.post("/messages/new", newMessage);
         if (response.status === 201) {
@@ -71,8 +69,10 @@ export default function Chat({
         } flex flex-col justify-between transition-all duration-300`}
       >
         <ChatHeader
+          chat={chat}
           user={userReceiver}
           onChangeOpenSearchMessage={onChangeOpenSearchMessage}
+          connectedUsers={connectedUsers}
         />
         <ChatContent chat={chat} messages={messages} />
         <ChatSendMessage chat={chat} />

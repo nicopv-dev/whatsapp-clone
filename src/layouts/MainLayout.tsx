@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Chat from "../pages/Chat";
 import Home from "../pages/Home";
-import { chat, IChat, IMessage, IUser } from "../types";
+import { chat, IChat, IMessage, IUser, IConnectedUser } from "../types";
 import axios from "../config/axios";
 import { useSelector } from "react-redux";
 import { selectUser } from "../features/userSlice";
+import { socket } from "../config/socket";
 
 export default function MainLayout() {
   const user: IUser = useSelector(selectUser);
@@ -15,6 +16,7 @@ export default function MainLayout() {
   const [messagesSelectedChat, setMessagesSelectedChat] = useState<IMessage[]>(
     []
   );
+  const [connectedUsers, setConnectedUsers] = useState<IConnectedUser[]>([]);
 
   // set chat from SideBarChats
   const onChangeSelectedChat = (chat: chat): void => {
@@ -47,9 +49,16 @@ export default function MainLayout() {
     setUpdateChats(false);
   }, [updateChats]);
 
+  // listening for new connections...
+  useEffect(() => {
+    socket.on("users", async (data) => {
+      setConnectedUsers(data);
+    });
+  }, [socket]);
+
   return (
     <div className="grid place-items-center h-screen">
-      <div className="min-h-[95vh] bg-light w-full md:w-[90%] flex shadow-2xl">
+      <div className="min-h-screen sm:min-h-[95vh] bg-light w-full md:w-[90%] flex shadow-2xl">
         {/* Sidebar */}
         <div className="max-h-[95vh] flex-[0.3_1_0%] hidden md:flex flex-col">
           <Sidebar
@@ -62,7 +71,7 @@ export default function MainLayout() {
           />
         </div>
         {/* Chats / Home */}
-        <div className="max-h-[95vh] flex-1 md:flex-[0.7_1_0%] bg-grayLight">
+        <div className="max-h-screen sm:max-h-[95vh] flex-1 md:flex-[0.7_1_0%] bg-grayLight">
           {!chatSelected ? (
             <Home />
           ) : (
@@ -71,6 +80,7 @@ export default function MainLayout() {
               onChangeUpdateChats={onChangeUpdateChats}
               messages={messagesSelectedChat}
               onChangeUpdateMessages={onChangeUpdateMessages}
+              connectedUsers={connectedUsers}
             />
           )}
         </div>

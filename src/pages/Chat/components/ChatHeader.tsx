@@ -1,18 +1,33 @@
+import { useEffect, useState } from "react";
 import { IoSearchSharp, IoEllipsisVertical } from "react-icons/io5";
-import { IUser } from "../../../types";
+import { IChat, IConnectedUser, IUser } from "../../../types";
+import { socket } from "../../../config/socket";
 
 interface IChatHeaderProps {
+  chat: IChat;
   user: IUser;
   onChangeOpenSearchMessage: () => void;
+  connectedUsers: IConnectedUser[];
 }
 
 export default function ChatHeader({
+  chat,
   user,
   onChangeOpenSearchMessage,
+  connectedUsers,
 }: IChatHeaderProps) {
+  const [isConnected, setIsConnected] = useState<boolean>(false);
+
   const openSearchMessage = () => {
     onChangeOpenSearchMessage();
   };
+
+  // verify user is connected
+  useEffect(() => {
+    setIsConnected(
+      connectedUsers.some((item: IConnectedUser) => item.userId === user._id)
+    );
+  }, [user, connectedUsers]);
 
   return (
     <header className="bg-gray flex items-center justify-between py-2 px-6">
@@ -28,7 +43,10 @@ export default function ChatHeader({
             className="w-full object-cover aspect-1 rounded-full"
           />
         </div>
-        <h3>{user.name}</h3>
+        <div className="">
+          <h3>{user.name}</h3>
+          {isConnected && <p className="text-[10px] text-primary">Conectado</p>}
+        </div>
       </div>
 
       {/* chat icons */}

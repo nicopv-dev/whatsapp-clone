@@ -8,6 +8,7 @@ import {
 import { IChat, IMessage, IUser } from "../../../types";
 import { useSelector } from "react-redux";
 import { socket } from "../../../config/socket";
+import Picker from "emoji-picker-react";
 
 interface IChatSendMessageProps {
   chat: IChat;
@@ -15,6 +16,7 @@ interface IChatSendMessageProps {
 
 export default function ChatSendMessage({ chat }: IChatSendMessageProps) {
   const [inputMessage, setInputMessage] = useState<string>("");
+  const [isOpenEmojiPicker, setIsOpenEmojiPicker] = useState<boolean>(true);
   const user: IUser = useSelector((state) => state.user);
 
   const sendMessage = async (e) => {
@@ -32,32 +34,47 @@ export default function ChatSendMessage({ chat }: IChatSendMessageProps) {
     }
   };
 
+  const openEmojiPicket = () => {
+    setIsOpenEmojiPicker(!isOpenEmojiPicker);
+  };
+
+  const onEmojiClick = (e, emojiObject) => {
+    setInputMessage(inputMessage + emojiObject.emoji);
+  };
+
   return (
-    <form className="bg-gray flex items-center justify-between py-2 px-6 gap-3">
+    <div className="bg-gray flex items-center justify-between py-2 px-6 gap-3 relative">
+      {isOpenEmojiPicker && (
+        <div className="absolute bottom-14">
+          <Picker onEmojiClick={onEmojiClick} />
+        </div>
+      )}
       <div className="flex items-center gap-4">
-        <button>
-          <IoHappyOutline className="text-dark w-7 h-7" />
+        <button onClick={openEmojiPicket}>
+          <IoHappyOutline className="text-dark w-7 h-7 transtion duration-200 scale-100 hover:scale-110" />
         </button>
         <button>
-          <IoUnlinkOutline className="text-dark w-7 h-7" />
+          <IoUnlinkOutline className="text-dark w-7 h-7 transtion duration-200 scale-100 hover:scale-110" />
         </button>
       </div>
-      <input
-        value={inputMessage}
-        onChange={(e) => setInputMessage(e.target.value)}
-        type="text"
-        placeholder="Escribe un mensaje aqui"
-        className="grow py-2 px-4 text-md focus:outline-none rounded-lg"
-      />
-      {inputMessage.length > 0 ? (
-        <button onClick={sendMessage}>
-          <IoSend className="text-dark w-7 h-7" />
-        </button>
-      ) : (
-        <button>
-          <IoMic className="text-dark w-7 h-7" />
-        </button>
-      )}
-    </form>
+      <form className="w-full flex items-center justify-between gap-2">
+        <input
+          value={inputMessage}
+          onChange={(e) => setInputMessage(e.target.value)}
+          type="text"
+          placeholder="Escribe un mensaje aqui"
+          className="grow py-2 px-4 text-md focus:outline-none rounded-lg"
+        />
+        {inputMessage.length > 0 ? (
+          <button type="button" onClick={sendMessage}>
+            <IoSend className="text-dark w-7 h-7" />
+          </button>
+        ) : (
+          <button type="button">
+            <IoMic className="text-dark w-7 h-7" />
+          </button>
+        )}
+      </form>
+    </div>
   );
 }

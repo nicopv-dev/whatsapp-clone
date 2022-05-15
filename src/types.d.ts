@@ -4,6 +4,7 @@ export interface IUser {
   email: string;
   avatarUrl: string;
   isLoggedIn: boolean;
+  isConnected: boolean;
 }
 
 export interface IChat {
@@ -20,6 +21,11 @@ export interface IMessage {
   sender: string;
   chat: string;
   createdAt: string;
+}
+
+export interface IConnectedUser {
+  userId: string;
+  socketId: string;
 }
 
 // Interface Components Props

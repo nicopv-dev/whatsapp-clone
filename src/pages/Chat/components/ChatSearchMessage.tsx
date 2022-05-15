@@ -67,7 +67,7 @@ export default function ChatSearchMessage({
           ))}
         </div>
       ) : (
-        <p className="text-center font-light">Buscar mensaje en el Chat</p>
+        <p className="text-center font-light my-2">Buscar mensaje en el Chat</p>
       )}
     </div>
   );
