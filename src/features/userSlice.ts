@@ -2,6 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 import { socket } from "../config/socket";
 import { IUser } from "../types";
 
+export interface IUserState {
+  user: IUser;
+}
+
 const initialState: IUser = {
   _id: "",
   name: "",
@@ -15,7 +19,7 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUserLoginDetails: (state, action) => {
+    setUserLoginDetails: (state: IUser, action) => {
       state._id = action.payload._id;
       state.name = action.payload.name;
       state.email = action.payload.email;
@@ -38,7 +42,7 @@ export const { setUserLoginDetails, setSignOutUser } = userSlice.actions;
 
 export default userSlice.reducer;
 
-export const selectUser: IUser = (state) => state.user;
+export const selectUser = (state: IUserState) => state.user;
 
 export const fetchLoginUser = () => async (dispatch) => {
   try {

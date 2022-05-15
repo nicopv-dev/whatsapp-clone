@@ -1,11 +1,10 @@
 import moment from "moment";
 import React, { useState } from "react";
 import { IoClose, IoSearchSharp } from "react-icons/io5";
-import { IChat, IMessage } from "../../../types";
+import { IMessage } from "../../../types";
 
 interface IChatSearchMessageProps {
   onChangeOpenSearchMessage: () => void;
-  chat: IChat;
   messages: IMessage[];
 }
 
@@ -13,9 +12,19 @@ interface ISearchItemProps {
   message: IMessage;
 }
 
+function SearchItem({ message }: ISearchItemProps) {
+  return (
+    <section className="bg-light border-b border-b-gray py-2 px-4 hover:cursor-pointer transition duration-200 hover:bg-gray">
+      <span className="text-dark text-[10px]">
+        {moment(message.createdAt).format("DD/MM/YYYY")}
+      </span>
+      <p className="text-dark m-0">{message.text}</p>
+    </section>
+  );
+}
+
 export default function ChatSearchMessage({
   onChangeOpenSearchMessage,
-  chat,
   messages,
 }: IChatSearchMessageProps) {
   const [inputSearch, setInputSearch] = useState<string>("");
@@ -38,7 +47,7 @@ export default function ChatSearchMessage({
   return (
     <div className="grow bg-light">
       <header className="bg-gray py-4 px-6 flex items-center gap-5">
-        <button onClick={closeSearchMessage}>
+        <button onClick={closeSearchMessage} type="button">
           <IoClose className="w-6 h-6 text-dark" />
         </button>
         <h4 className="ml-2">Buscar mensaje</h4>
@@ -62,8 +71,8 @@ export default function ChatSearchMessage({
 
       {inputSearch ? (
         <div className="h-full flex flex-col pb-2">
-          {results.map((item, index) => (
-            <SearchItem key={index} message={item} />
+          {results.map((item) => (
+            <SearchItem key={item._id} message={item} />
           ))}
         </div>
       ) : (
@@ -72,17 +81,3 @@ export default function ChatSearchMessage({
     </div>
   );
 }
-
-const SearchItem = ({ message }: ISearchItemProps) => {
-  return (
-    <section
-      className="bg-light border-b border-b-gray py-2 px-4 hover:cursor-pointer transition duration-200 hover:bg-gray"
-      onClick={() => {}}
-    >
-      <span className="text-dark text-[10px]">
-        {moment(message.createdAt).format("DD/MM/YYYY")}
-      </span>
-      <p className="text-dark m-0">{message.text}</p>
-    </section>
-  );
-};

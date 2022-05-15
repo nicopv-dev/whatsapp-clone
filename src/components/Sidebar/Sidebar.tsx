@@ -1,4 +1,4 @@
-import { ISidebarProps, IChat, IMessage } from "../../types";
+import { ISidebarProps } from "../../types";
 import SidebarChats from "./SidebarChats";
 import SidebarHeader from "./SidebarHeader";
 import SidebarSearch from "./SidebarSearch";

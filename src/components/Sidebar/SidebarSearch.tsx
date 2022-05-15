@@ -2,6 +2,31 @@ import { useMemo, useRef, useState } from "react";
 import { IoSearchSharp } from "react-icons/io5";
 import { createAutocomplete } from "@algolia/autocomplete-core";
 
+interface IAutocompleteItem {
+  name: string;
+  email: string;
+  avatarUrl: string;
+}
+
+function AutocompleteItem({ name, email, avatarUrl }: IAutocompleteItem) {
+  return (
+    <li className="w-full flex items-center gap-3 py-2 px-1 hover:cursor-pointer bg-light transition duration-200 ease-out hover:bg-gray">
+      <img
+        alt=""
+        src={
+          avatarUrl ||
+          "https://avatars0.githubusercontent.com/u/12097?s=460&v=4"
+        }
+        className="w-10 h-10 object-cover aspect-1 rounded-full"
+      />
+      <div className="flex flex-col">
+        <p className="text-base">{email}</p>
+        <span className="text-sm">{name}</span>
+      </div>
+    </li>
+  );
+}
+
 export default function SidebarSearch(props) {
   const [autocompleteState, setAutocompleteState] = useState({
     collections: [],
@@ -16,10 +41,11 @@ export default function SidebarSearch(props) {
           {
             sourceId: "users-whatsapp-api",
             getItems: ({ query }) => {
-              if (!!query)
+              if (!!query) {
                 return fetch(
                   `http://localhost:8000/api/search?q=${query}`
                 ).then((res) => res.json());
+              }
             },
           },
         ],
@@ -77,22 +103,3 @@ export default function SidebarSearch(props) {
     </form>
   );
 }
-
-const AutocompleteItem = ({ name, email, avatarUrl }) => {
-  return (
-    <li className="w-full flex items-center gap-3 py-2 px-1 hover:cursor-pointer bg-light transition duration-200 ease-out hover:bg-gray">
-      <img
-        alt=""
-        src={
-          avatarUrl ||
-          "https://avatars0.githubusercontent.com/u/12097?s=460&v=4"
-        }
-        className="w-10 h-10 object-cover aspect-1 rounded-full"
-      />
-      <div className="flex flex-col">
-        <p className="text-base">{email}</p>
-        <span className="text-sm">{name}</span>
-      </div>
-    </li>
-  );
-};

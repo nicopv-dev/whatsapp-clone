@@ -1,43 +1,29 @@
-import { FunctionComponent, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { IChat, IMessage, IUser } from "../../../types";
 import moment from "moment";
+import { IMessage, IUser } from "../../../types";
+import { selectUser } from "../../../features/userSlice";
 
 interface IChatContentProps {
-  chat: IChat;
   messages: IMessage[];
 }
 
 interface IMessageProps {
-  chat: IMessage;
+  message: IMessage;
   user: IUser;
 }
 
-const ChatContent: FunctionComponent<IChatContentProps> = ({
-  chat,
-  messages,
-}) => {
-  const user: IUser = useSelector((state) => state.user);
-
-  return (
-    <div className="flex-1 bg-chat bg-center bg-no-repeat bg-cover overflow-y-auto py-4 px-10 md:px-[80px] flex flex-col gap-2">
-      {messages.map((item, index) => (
-        <Message key={index} message={item} user={user} />
-      ))}
-    </div>
-  );
-};
-
-const Message: FunctionComponent<IMessageProps> = ({ message, user }) => {
+function Message({ message, user }: IMessageProps) {
   const [isMyMessage, setIsMyMessage] = useState<boolean>(false);
 
-  const foundMyMessage = useCallback(() => {
-    return user._id === message.sender ? true : false;
-  }, []);
+  const foundMyMessage = useCallback(
+    () => user._id === message.sender,
+    [user, message]
+  );
 
   useEffect(() => {
     setIsMyMessage(foundMyMessage());
-  }, [message]);
+  }, [foundMyMessage]);
 
   return (
     <p
@@ -52,6 +38,16 @@ const Message: FunctionComponent<IMessageProps> = ({ message, user }) => {
       </span>
     </p>
   );
-};
+}
 
-export default ChatContent;
+export default function ChatContent({ messages }: IChatContentProps) {
+  const user = useSelector(selectUser);
+
+  return (
+    <div className="flex-1 bg-chat bg-center bg-no-repeat bg-cover overflow-y-auto py-4 px-10 md:px-[80px] flex flex-col gap-2">
+      {messages.map((item) => (
+        <Message key={item._id} message={item} user={user} />
+      ))}
+    </div>
+  );
+}

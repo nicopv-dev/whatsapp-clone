@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import Sidebar from "../components/Sidebar";
 import Chat from "../pages/Chat";
 import Home from "../pages/Home";
-import { chat, IChat, IMessage, IUser, IConnectedUser } from "../types";
+import { IChat, IMessage, IConnectedUser } from "../types";
 import axios from "../config/axios";
-import { useSelector } from "react-redux";
 import { selectUser } from "../features/userSlice";
 import { socket } from "../config/socket";
 
 export default function MainLayout() {
-  const user: IUser = useSelector(selectUser);
+  const user = useSelector(selectUser);
   const [chats, setChats] = useState<IChat[]>([]);
   const [chatSelected, setChatSelected] = useState<IChat | null>(null);
   const [updateChats, setUpdateChats] = useState(false);
@@ -19,7 +19,7 @@ export default function MainLayout() {
   const [connectedUsers, setConnectedUsers] = useState<IConnectedUser[]>([]);
 
   // set chat from SideBarChats
-  const onChangeSelectedChat = (chat: chat): void => {
+  const onChangeSelectedChat = (chat: IChat): void => {
     setChatSelected(chat);
   };
   // update chat database

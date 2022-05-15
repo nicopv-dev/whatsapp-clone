@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { IConnectedUser } from "../types";
 
+export interface IConnectedUserState {
+  connectedUsers: IConnectedUser[];
+}
+
 const initialState: IConnectedUser = {
   socketId: "",
   userId: "",

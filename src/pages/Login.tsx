@@ -13,6 +13,7 @@ export default function Login() {
         <button
           className="bg-gray flex items-center gap-3 my-3 py-1 px-4"
           onClick={login}
+          type="button"
         >
           <FcGoogle className="w-10 h-10" />
           Iniciar Sesion

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Socket } from "socket.io-client";
 import { IChat, IConnectedUser, IMessage, IUser } from "../../types";
 import ChatContent from "./components/ChatContent";
 import ChatHeader from "./components/ChatHeader";
@@ -25,7 +24,6 @@ export default function Chat({
   onChangeUpdateMessages,
   connectedUsers,
 }: IChatProps) {
-  const [chatTitle, setChatTitle] = useState<string>("");
   const [userReceiver, setUserReceiver] = useState<IUser>({});
   const user = useSelector((state) => state.user as IUser);
   const [openSearchMessage, setOpenSearchMessage] = useState<boolean>(false);
@@ -69,7 +67,6 @@ export default function Chat({
         } flex flex-col justify-between transition-all duration-300`}
       >
         <ChatHeader
-          chat={chat}
           user={userReceiver}
           onChangeOpenSearchMessage={onChangeOpenSearchMessage}
           connectedUsers={connectedUsers}

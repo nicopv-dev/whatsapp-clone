@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   IoUnlinkOutline,
   IoHappyOutline,
   IoMic,
   IoSend,
 } from "react-icons/io5";
-import { IChat, IMessage, IUser } from "../../../types";
 import { useSelector } from "react-redux";
-import { socket } from "../../../config/socket";
 import Picker from "emoji-picker-react";
+import { IChat } from "../../../types";
+import { socket } from "../../../config/socket";
+import { selectUser } from "../../../features/userSlice";
 
 interface IChatSendMessageProps {
   chat: IChat;
@@ -17,7 +18,7 @@ interface IChatSendMessageProps {
 export default function ChatSendMessage({ chat }: IChatSendMessageProps) {
   const [inputMessage, setInputMessage] = useState<string>("");
   const [isOpenEmojiPicker, setIsOpenEmojiPicker] = useState<boolean>(true);
-  const user: IUser = useSelector((state) => state.user);
+  const user = useSelector(selectUser);
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -50,10 +51,10 @@ export default function ChatSendMessage({ chat }: IChatSendMessageProps) {
         </div>
       )}
       <div className="flex items-center gap-4">
-        <button onClick={openEmojiPicket}>
+        <button onClick={openEmojiPicket} type="button">
           <IoHappyOutline className="text-dark w-7 h-7 transtion duration-200 scale-100 hover:scale-110" />
         </button>
-        <button>
+        <button type="button">
           <IoUnlinkOutline className="text-dark w-7 h-7 transtion duration-200 scale-100 hover:scale-110" />
         </button>
       </div>

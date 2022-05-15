@@ -25,7 +25,7 @@ export default function SidebarHeader() {
       </div>
       {/* icons */}
       <div className="flex items-center gap-8">
-        <button onClick={logOut}>
+        <button onClick={logOut} type="button">
           <IoSync className="text-dark h-6 w-6" />
         </button>
         <IoChatboxEllipses className="text-dark h-6 w-6" />

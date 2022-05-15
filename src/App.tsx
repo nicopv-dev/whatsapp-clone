@@ -1,20 +1,16 @@
-import MainLayout from "./layouts/MainLayout";
-import Home from "./pages/Home";
-import { useSelector } from "react-redux";
-import { selectUser } from "./features/userSlice";
-import Login from "./pages/Login";
+import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { fetchLoginUser } from "./features/userSlice";
-import { useDispatch } from "react-redux";
-import { IUser } from "./types";
+import MainLayout from "./layouts/MainLayout";
+import { fetchLoginUser, IUserState } from "./features/userSlice";
+import Login from "./pages/Login";
 
 function App() {
-  const user: IUser = useSelector(selectUser); // user authenticated
+  const user = useSelector((state: IUserState) => state.user); // user authenticated
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchLoginUser());
-  }, []);
+  }, [dispatch]);
 
   return user.isLoggedIn ? <MainLayout /> : <Login />;
 }

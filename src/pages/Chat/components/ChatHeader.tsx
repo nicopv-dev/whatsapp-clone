@@ -1,17 +1,14 @@
 import { useEffect, useState } from "react";
 import { IoSearchSharp, IoEllipsisVertical } from "react-icons/io5";
-import { IChat, IConnectedUser, IUser } from "../../../types";
-import { socket } from "../../../config/socket";
+import { IConnectedUser, IUser } from "../../../types";
 
 interface IChatHeaderProps {
-  chat: IChat;
   user: IUser;
   onChangeOpenSearchMessage: () => void;
   connectedUsers: IConnectedUser[];
 }
 
 export default function ChatHeader({
-  chat,
   user,
   onChangeOpenSearchMessage,
   connectedUsers,
@@ -51,7 +48,7 @@ export default function ChatHeader({
 
       {/* chat icons */}
       <div className="flex gap-4">
-        <button onClick={openSearchMessage}>
+        <button onClick={openSearchMessage} type="button">
           <IoSearchSharp className="text-dark w-5 h-5" />
         </button>
         <IoEllipsisVertical className="text-dark w-5 h-5" />
