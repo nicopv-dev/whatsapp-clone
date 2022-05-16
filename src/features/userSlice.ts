@@ -1,4 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  PayloadAction,
+  AnyAction,
+  Dispatch,
+} from "@reduxjs/toolkit";
 import { socket } from "../config/socket";
 import { IUser } from "../types";
 
@@ -19,15 +24,15 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUserLoginDetails: (state: IUser, action) => {
-      state._id = action.payload._id;
-      state.name = action.payload.name;
-      state.email = action.payload.email;
-      state.avatarUrl = action.payload.avatarUrl;
+    setUserLoginDetails: (state: IUser, { payload }: PayloadAction<IUser>) => {
+      state._id = payload._id;
+      state.name = payload.name;
+      state.email = payload.email;
+      state.avatarUrl = payload.avatarUrl;
       state.isLoggedIn = true;
       state.isConnected = true;
     },
-    setSignOutUser: (state) => {
+    setSignOutUser: (state: IUser) => {
       state._id = "";
       state.name = "";
       state.email = "";
@@ -44,10 +49,10 @@ export default userSlice.reducer;
 
 export const selectUser = (state: IUserState) => state.user;
 
-export const fetchLoginUser = () => async (dispatch) => {
+export const fetchLoginUser = () => async (dispatch: Dispatch<AnyAction>) => {
   try {
     const response = await fetch(
-      "http://localhost:8000/api/auth/login/success",
+      `${import.meta.env.VITE_SERVER_URL}/api/auth/login/success`,
       {
         method: "GET",
         credentials: "include",

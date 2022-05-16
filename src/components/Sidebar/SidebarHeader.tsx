@@ -7,7 +7,7 @@ export default function SidebarHeader() {
   const user: IUser = useSelector(selectUser);
 
   const logOut = (): void => {
-    window.open("http://localhost:8000/api/auth/logout", "_self");
+    window.open(`${import.meta.env.VITE_SERVER_URL}/api/auth/logout`, "_self");
   };
 
   return (

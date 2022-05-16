@@ -5,9 +5,9 @@ import ChatContent from "./components/ChatContent";
 import ChatHeader from "./components/ChatHeader";
 import ChatSendMessage from "./components/ChatSendMessage";
 import { socket } from "../../config/socket";
-import axios from "../../config/axios";
 import ChatSearchMessage from "./components/ChatSearchMessage";
 import { findUserReceiver } from "../../utils/methods";
+import { selectUser } from "../../features/userSlice";
 
 interface IChatProps {
   chat: IChat;
@@ -25,7 +25,7 @@ export default function Chat({
   connectedUsers,
 }: IChatProps) {
   const [userReceiver, setUserReceiver] = useState<IUser>({});
-  const user = useSelector((state) => state.user as IUser);
+  const user = useSelector(selectUser);
   const [openSearchMessage, setOpenSearchMessage] = useState<boolean>(false);
 
   const onChangeOpenSearchMessage = (): void => {
@@ -35,12 +35,11 @@ export default function Chat({
   // find info receiver user
   useEffect(() => {
     setUserReceiver(findUserReceiver(chat, user));
-  }, [chat]);
+  }, [chat, user]);
 
   // listening for new message
   useEffect(() => {
     socket.on("receive_message", async (data) => {
-      console.log(data);
       if (data.chatId === chat._id) {
         const newMessage: IMessage = {
           _id: "",
@@ -49,12 +48,9 @@ export default function Chat({
           sender: data.sender,
           chat: data.chatId,
         };
+
         onChangeUpdateMessages(newMessage);
-        // save message to database
-        const response = await axios.post("/messages/new", newMessage);
-        if (response.status === 201) {
-          onChangeUpdateChats();
-        }
+        onChangeUpdateChats();
       }
     });
   }, [socket]);
@@ -72,7 +68,10 @@ export default function Chat({
           connectedUsers={connectedUsers}
         />
         <ChatContent chat={chat} messages={messages} />
-        <ChatSendMessage chat={chat} />
+        <ChatSendMessage
+          chat={chat}
+          onChangeUpdateChats={onChangeUpdateChats}
+        />
       </div>
 
       {openSearchMessage && (

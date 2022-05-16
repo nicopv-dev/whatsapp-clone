@@ -10,14 +10,19 @@ import Picker from "emoji-picker-react";
 import { IChat } from "../../../types";
 import { socket } from "../../../config/socket";
 import { selectUser } from "../../../features/userSlice";
+import axios from "../../../config/axios";
 
 interface IChatSendMessageProps {
-  chat: IChat;
+  chatSelected: IChat;
+  onChangeUpdateChats: () => void;
 }
 
-export default function ChatSendMessage({ chat }: IChatSendMessageProps) {
+export default function ChatSendMessage({
+  chatSelected,
+  onChangeUpdateChats,
+}: IChatSendMessageProps) {
   const [inputMessage, setInputMessage] = useState<string>("");
-  const [isOpenEmojiPicker, setIsOpenEmojiPicker] = useState<boolean>(true);
+  const [isOpenEmojiPicker, setIsOpenEmojiPicker] = useState<boolean>(false);
   const user = useSelector(selectUser);
 
   const sendMessage = async (e) => {
@@ -26,12 +31,22 @@ export default function ChatSendMessage({ chat }: IChatSendMessageProps) {
     if (inputMessage !== "") {
       const messageData = {
         message: inputMessage,
-        chatId: chat._id,
+        chatId: chatSelected._id,
         sender: user._id,
         createdAt: Date.now(),
       };
       await socket.emit("new_message", messageData);
       setInputMessage("");
+      // save message to database
+
+      const response = await axios.post("/messages/new", {
+        text: inputMessage,
+        sender: user._id,
+        chat: chatSelected._id,
+      });
+      if (response.status === 201) {
+        onChangeUpdateChats();
+      }
     }
   };
 
