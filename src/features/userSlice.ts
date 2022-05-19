@@ -56,10 +56,10 @@ export const fetchLoginUser = () => async (dispatch: Dispatch<AnyAction>) => {
       `https://whatsapp-clone-api-app-develop.herokuapp.com`
     );
     const response = await fetch(
-      `${import.meta.env.VITE_SERVER_URL}/api/auth/login/success`,
+      `https://whatsapp-clone-api-app-develop.herokuapp.com/api/auth/login/success`,
       {
         method: "GET",
-        mode: "cors",
+        mode: "no-cors",
         credentials: "include",
         headers,
       }
