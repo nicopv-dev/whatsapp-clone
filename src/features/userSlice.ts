@@ -51,7 +51,10 @@ export const fetchLoginUser = () => async (dispatch: Dispatch<AnyAction>) => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
     headers.append("Accept", "application/json");
-    headers.append("Origin", `${import.meta.env.VITE_SERVER_URL}`);
+    headers.append(
+      "Origin",
+      `https://whatsapp-clone-api-app-develop.herokuapp.com`
+    );
     const response = await fetch(
       `${import.meta.env.VITE_SERVER_URL}/api/auth/login/success`,
       {

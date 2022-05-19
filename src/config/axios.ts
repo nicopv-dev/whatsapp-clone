@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: "http://localhost:8000/api",
+  baseURL: "https://whatsapp-clone-api-app-develop.herokuapp.com/api",
 });
