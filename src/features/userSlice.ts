@@ -52,22 +52,22 @@ export const fetchLoginUser = () => async (dispatch: Dispatch<AnyAction>) => {
       `https://whatsapp-clone-api-app-develop.herokuapp.com/api/auth/login/success`,
       {
         method: "GET",
-        mode: "no-cors",
+        mode: "cors",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          Accept: "application/json",
+          "Accept": "application/json",
           "Access-Control-Allow-Credentials": "true",
         },
       }
     );
-    console.log(response);
+
     const data = await response.json();
     if (data.success) {
       dispatch(setUserLoginDetails(data.user));
       await socket.emit("user_connected", data.user);
     }
   } catch (err) {
-    console.log(err);
+    console.log(err.response);
   }
 };
