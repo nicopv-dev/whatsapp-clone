@@ -68,6 +68,6 @@ export const fetchLoginUser = () => async (dispatch: Dispatch<AnyAction>) => {
       await socket.emit("user_connected", data.user);
     }
   } catch (err) {
-    console.log(err.response);
+    console.log(err);
   }
 };
