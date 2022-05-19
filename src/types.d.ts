@@ -4,7 +4,6 @@ export interface IUser {
   email: string;
   avatarUrl: string;
   isLoggedIn: boolean;
-  isConnected: boolean;
 }
 
 export interface IChat {

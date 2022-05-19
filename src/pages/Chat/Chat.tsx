@@ -28,7 +28,6 @@ export default function Chat({
     _id: "",
     avatarUrl: "",
     email: "",
-    isConnected: false,
     name: "",
     isLoggedIn: false,
   });

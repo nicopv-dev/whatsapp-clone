@@ -26,7 +26,6 @@ function ChatItem({
     _id: "",
     avatarUrl: "",
     email: "",
-    isConnected: false,
     isLoggedIn: true,
     name: "",
   });
