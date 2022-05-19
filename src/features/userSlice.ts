@@ -48,20 +48,17 @@ export const selectUser = (state: IUserState) => state.user;
 
 export const fetchLoginUser = () => async (dispatch: Dispatch<AnyAction>) => {
   try {
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append("Accept", "application/json");
-    headers.append(
-      "Origin",
-      `https://whatsapp-clone-api-app-develop.herokuapp.com`
-    );
     const response = await fetch(
       `https://whatsapp-clone-api-app-develop.herokuapp.com/api/auth/login/success`,
       {
         method: "GET",
         mode: "no-cors",
         credentials: "include",
-        headers,
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "Access-Control-Allow-Credentials": "true",
+        },
       }
     );
     console.log(response);
