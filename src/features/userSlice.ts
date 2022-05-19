@@ -57,7 +57,6 @@ export const fetchLoginUser = () => async (dispatch: Dispatch<AnyAction>) => {
         headers: {
           "Content-Type": "application/json",
           "Accept": "application/json",
-          "Access-Control-Allow-Credentials": "true",
         },
       }
     );
