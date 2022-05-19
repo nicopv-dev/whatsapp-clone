@@ -54,10 +54,6 @@ export const fetchLoginUser = () => async (dispatch: Dispatch<AnyAction>) => {
         method: "GET",
         mode: "cors",
         credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-        },
       }
     );
 
