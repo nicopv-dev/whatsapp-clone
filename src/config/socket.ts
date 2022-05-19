@@ -1,5 +1,5 @@
 import io from "socket.io-client";
 
-const SOCKET_URL = import.meta.VITE_SOCKET_URI || "http://localhost:8000";
+const SOCKET_URL = "https://whatsapp-clone-api-app-develop.herokuapp.com";
 
 export const socket = io(SOCKET_URL);
