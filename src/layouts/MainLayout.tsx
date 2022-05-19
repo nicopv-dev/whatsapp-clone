@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import Sidebar from "../components/Sidebar";
 import Chat from "../pages/Chat";
 import Home from "../pages/Home";
-import { IChat, IMessage, IConnectedUser } from "../types";
+import { IChat, IMessage, IConnectedUser, IUser } from "../types";
 import axios from "../config/axios";
 import { selectUser } from "../features/userSlice";
 import { socket } from "../config/socket";
@@ -11,7 +11,13 @@ import { socket } from "../config/socket";
 export default function MainLayout() {
   const user = useSelector(selectUser);
   const [chats, setChats] = useState<IChat[]>([]);
-  const [chatSelected, setChatSelected] = useState<IChat | null>(null);
+  const [chatSelected, setChatSelected] = useState<IChat>({
+    _id: "",
+    members: [{} as IUser],
+    messages: [{} as IMessage],
+    createdAt: "",
+    typeChat: "private",
+  });
   const [updateChats, setUpdateChats] = useState(false);
   const [messagesSelectedChat, setMessagesSelectedChat] = useState<IMessage[]>(
     []

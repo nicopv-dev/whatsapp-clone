@@ -4,13 +4,13 @@
     "es2021": true
   },
   "extends": [
-    // "plugin:react/recommended",
     "plugin:react/recommended",
     "plugin:jsx-a11y/recommended",
     "plugin:react-hooks/recommended",
     "airbnb",
     "airbnb-typescript",
     "plugin:import/typescript",
+    "plugin:@typescript-eslint/recommended",
     "prettier"
   ],
   "parser": "@typescript-eslint/parser",
@@ -24,6 +24,7 @@
   },
   "plugins": ["react", "@typescript-eslint", "prettier"],
   "rules": {
+    "strict": ["error", "global"],
     // "quotes": ["error", "double", { "avoidEscape": true }],
     // "@typescript-eslint/quotes": ["error", "double", { "avoidEscape": true }],
     "prettier/prettier": "off",
@@ -48,6 +49,7 @@
     "no-extra-boolean-cast": "off",
     "consistent-return": "off",
     "react/jsx-props-no-spreading": "off",
-    "react/no-array-index-key": "off"
+    "react/no-array-index-key": "off",
+    "react/prop-types": "off"
   }
 }

@@ -24,7 +24,14 @@ export default function Chat({
   onChangeUpdateMessages,
   connectedUsers,
 }: IChatProps) {
-  const [userReceiver, setUserReceiver] = useState<IUser>({});
+  const [userReceiver, setUserReceiver] = useState<IUser>({
+    _id: "",
+    avatarUrl: "",
+    email: "",
+    isConnected: false,
+    name: "",
+    isLoggedIn: false,
+  });
   const user = useSelector(selectUser);
   const [openSearchMessage, setOpenSearchMessage] = useState<boolean>(false);
 
@@ -67,9 +74,9 @@ export default function Chat({
           onChangeOpenSearchMessage={onChangeOpenSearchMessage}
           connectedUsers={connectedUsers}
         />
-        <ChatContent chat={chat} messages={messages} />
+        <ChatContent messages={messages} />
         <ChatSendMessage
-          chat={chat}
+          chatSelected={chat}
           onChangeUpdateChats={onChangeUpdateChats}
         />
       </div>
@@ -77,7 +84,6 @@ export default function Chat({
       {openSearchMessage && (
         <ChatSearchMessage
           onChangeOpenSearchMessage={onChangeOpenSearchMessage}
-          chat={chat}
           messages={messages}
         />
       )}

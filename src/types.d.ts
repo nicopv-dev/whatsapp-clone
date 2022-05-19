@@ -16,7 +16,7 @@ export interface IChat {
 }
 
 export interface IMessage {
-  _id: number;
+  _id: string;
   text: string;
   sender: string;
   chat: string;
@@ -30,8 +30,8 @@ export interface IConnectedUser {
 
 // Interface Components Props
 export interface ISidebarProps {
-  chatSelected?: IChat;
+  chatSelected: IChat;
   chats: IChat[];
   onChangeSelectedChat(chat: IChat): void;
-  onChangeUpdateMessagesSelectedChat(messages: IMessage): void;
+  onChangeUpdateMessagesSelectedChat(messages: IMessage[]): void;
 }

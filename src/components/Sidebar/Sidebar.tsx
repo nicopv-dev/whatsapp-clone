@@ -1,7 +1,6 @@
 import { ISidebarProps } from "../../types";
 import SidebarChats from "./SidebarChats";
 import SidebarHeader from "./SidebarHeader";
-import SidebarSearch from "./SidebarSearch";
 
 export default function Sidebar({
   chatSelected,
@@ -12,7 +11,7 @@ export default function Sidebar({
   return (
     <>
       <SidebarHeader />
-      <SidebarSearch />
+      {/* <SidebarSearch /> */}
       <SidebarChats
         chatSelected={chatSelected}
         chats={chats}

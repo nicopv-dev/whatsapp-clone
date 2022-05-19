@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   IoUnlinkOutline,
   IoHappyOutline,
@@ -17,6 +17,10 @@ interface IChatSendMessageProps {
   onChangeUpdateChats: () => void;
 }
 
+interface IEmoji {
+  emoji: string;
+}
+
 export default function ChatSendMessage({
   chatSelected,
   onChangeUpdateChats,
@@ -25,7 +29,7 @@ export default function ChatSendMessage({
   const [isOpenEmojiPicker, setIsOpenEmojiPicker] = useState<boolean>(false);
   const user = useSelector(selectUser);
 
-  const sendMessage = async (e) => {
+  const sendMessage = async (e: React.MouseEvent): Promise<void> => {
     e.preventDefault();
 
     if (inputMessage !== "") {
@@ -54,7 +58,7 @@ export default function ChatSendMessage({
     setIsOpenEmojiPicker(!isOpenEmojiPicker);
   };
 
-  const onEmojiClick = (e, emojiObject) => {
+  const onEmojiClick = (e: React.MouseEvent, emojiObject: IEmoji) => {
     setInputMessage(inputMessage + emojiObject.emoji);
   };
 

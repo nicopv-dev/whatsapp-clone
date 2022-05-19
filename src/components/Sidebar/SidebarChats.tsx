@@ -9,10 +9,10 @@ import { selectUser } from "../../features/userSlice";
 
 interface IChatItemProps {
   chatSelected: IChat;
-  chat: IChat;
   user: IUser;
+  chat: IChat;
   onChangeSelectedChat(chat: IChat): void;
-  onChangeUpdateMessagesSelectedChat(messages: IMessage): void;
+  onChangeUpdateMessagesSelectedChat(messages: IMessage[]): void;
 }
 
 function ChatItem({
@@ -22,11 +22,25 @@ function ChatItem({
   onChangeSelectedChat,
   onChangeUpdateMessagesSelectedChat,
 }: IChatItemProps) {
-  const [userReceiver, setUserReceiver] = useState<IUser>({});
-  const [lastMessage, setLastMessage] = useState<IMessage>({});
+  const [userReceiver, setUserReceiver] = useState<IUser>({
+    _id: "",
+    avatarUrl: "",
+    email: "",
+    isConnected: false,
+    isLoggedIn: true,
+    name: "",
+  });
+  const [lastMessage, setLastMessage] = useState<IMessage>({
+    _id: "",
+    chat: "",
+    sender: "",
+    createdAt: "",
+    text: "",
+  });
   const [chatActive, setChatActive] = useState<boolean>(false);
 
   const joinChat = (newChat: IChat) => {
+    // update new chat selected
     onChangeSelectedChat(newChat);
     onChangeUpdateMessagesSelectedChat(newChat.messages);
     socket.emit("join_chat", newChat._id);
@@ -36,7 +50,7 @@ function ChatItem({
   useEffect(() => {
     setUserReceiver(findUserReceiver(chat, user));
     setLastMessage(findLastMessage(chat));
-  }, [chat]);
+  }, [chat, user]);
 
   useEffect(() => {
     setChatActive(() => chat._id === chatSelected?._id);
@@ -100,7 +114,7 @@ export default function SidebarChats({
           />
         ))
       ) : (
-        <p type="button" className="flex items-center justify-center">
+        <p className="flex items-center justify-center">
           <Spin />
         </p>
       )}

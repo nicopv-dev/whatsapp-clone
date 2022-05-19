@@ -36,7 +36,7 @@ export default function ChatSearchMessage({
     setResults([]);
   };
 
-  const searchMessages = (e: React.FormEvent<HTMLInputElement>): void => {
+  const searchMessages = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setInputSearch(e.target.value);
     const newResults = messages.filter((message) =>
       message.text.toLocaleLowerCase().includes(e.target.value)
