@@ -4,7 +4,7 @@ import { IChat, IConnectedUser, IMessage, IUser } from "../../types";
 import ChatContent from "./components/ChatContent";
 import ChatHeader from "./components/ChatHeader";
 import ChatSendMessage from "./components/ChatSendMessage";
-import { socket } from "../../config/socket";
+import socket from "../../config/socket";
 import ChatSearchMessage from "./components/ChatSearchMessage";
 import { findUserReceiver } from "../../utils/methods";
 import { selectUser } from "../../features/userSlice";
@@ -56,10 +56,9 @@ export default function Chat({
         };
 
         onChangeUpdateMessages(newMessage);
-        onChangeUpdateChats();
       }
     });
-  }, [socket]);
+  }, [socket, chat]);
 
   return (
     <div className="h-full flex">
@@ -69,7 +68,7 @@ export default function Chat({
         } flex flex-col justify-between transition-all duration-300`}
       >
         <ChatHeader
-          user={userReceiver}
+          userReceiver={userReceiver}
           onChangeOpenSearchMessage={onChangeOpenSearchMessage}
           connectedUsers={connectedUsers}
         />

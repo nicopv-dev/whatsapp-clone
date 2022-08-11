@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Sidebar from "../components/Sidebar";
 import Chat from "../pages/Chat";
@@ -6,7 +6,7 @@ import Home from "../pages/Home";
 import { IChat, IMessage, IConnectedUser, IUser } from "../types";
 import axios from "../config/axios";
 import { selectUser } from "../features/userSlice";
-import { socket } from "../config/socket";
+import socket from "../config/socket";
 
 export default function MainLayout() {
   const user = useSelector(selectUser);
@@ -18,6 +18,7 @@ export default function MainLayout() {
     createdAt: "",
     typeChat: "private",
   });
+  const [isChatSelected, setIsChatSelected] = useState(false);
   const [updateChats, setUpdateChats] = useState(false);
   const [messagesSelectedChat, setMessagesSelectedChat] = useState<IMessage[]>(
     []
@@ -26,6 +27,7 @@ export default function MainLayout() {
 
   // set chat from SideBarChats
   const onChangeSelectedChat = (chat: IChat): void => {
+    setIsChatSelected(true);
     setChatSelected(chat);
   };
   // update chat database
@@ -41,19 +43,18 @@ export default function MainLayout() {
     setMessagesSelectedChat((messages) => [...messages, newMessage]);
   };
   // get user chat from database
-  const fetchChats = async () => {
+  const fetchChats = useCallback(async () => {
     try {
-      const { data } = await axios.get(`/users/${user._id}/chats`);
+      const { data } = await axios.get(`/api/users/${user._id}/chats`);
       setChats(data as IChat[]);
     } catch (err) {
       console.log(err);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     fetchChats();
-    setUpdateChats(false);
-  }, [updateChats]);
+  }, [updateChats, fetchChats]);
 
   // listening for new connections...
   useEffect(() => {
@@ -78,7 +79,7 @@ export default function MainLayout() {
         </div>
         {/* Chats / Home */}
         <div className="max-h-screen sm:max-h-[95vh] flex-1 md:flex-[0.7_1_0%] bg-grayLight">
-          {!chatSelected ? (
+          {!isChatSelected ? (
             <Home />
           ) : (
             <Chat

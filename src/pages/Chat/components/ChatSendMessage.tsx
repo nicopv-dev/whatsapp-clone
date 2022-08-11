@@ -8,7 +8,7 @@ import {
 import { useSelector } from "react-redux";
 import Picker from "emoji-picker-react";
 import { IChat } from "../../../types";
-import { socket } from "../../../config/socket";
+import socket from "../../../config/socket";
 import { selectUser } from "../../../features/userSlice";
 import axios from "../../../config/axios";
 
@@ -43,14 +43,33 @@ export default function ChatSendMessage({
       setInputMessage("");
       // save message to database
 
-      const response = await axios.post("/messages/new", {
+      const response = await axios.post("/api/messages/new", {
         text: inputMessage,
         sender: user._id,
         chat: chatSelected._id,
       });
       if (response.status === 201) {
         onChangeUpdateChats();
+        await socket.emit("stop_writing_message", messageData);
       }
+    }
+  };
+
+  const onChangeInputMessage = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    setInputMessage(e.target.value);
+    const messageData = {
+      message: inputMessage,
+      chatId: chatSelected._id,
+      sender: user._id,
+      createdAt: Date.now(),
+    };
+
+    if (e.target.value === "") {
+      await socket.emit("stop_writing_message", messageData);
+    } else {
+      await socket.emit("writing_message", messageData);
     }
   };
 
@@ -80,7 +99,7 @@ export default function ChatSendMessage({
       <form className="w-full flex items-center justify-between gap-2">
         <input
           value={inputMessage}
-          onChange={(e) => setInputMessage(e.target.value)}
+          onChange={onChangeInputMessage}
           type="text"
           placeholder="Escribe un mensaje aqui"
           className="grow py-2 px-4 text-md focus:outline-none rounded-lg"

@@ -4,7 +4,7 @@ import {
   AnyAction,
   Dispatch,
 } from "@reduxjs/toolkit";
-import { socket } from "../config/socket";
+import socket from "../config/socket";
 import { IUser } from "../types";
 
 export interface IUserState {
@@ -48,16 +48,20 @@ export const selectUser = (state: IUserState) => state.user;
 
 export const fetchLoginUser = () => async (dispatch: Dispatch<AnyAction>) => {
   try {
-    const response = await fetch(
-      `https://whatsapp-clone-api-app-develop.herokuapp.com/api/auth/login/success`,
-      {
-        method: "GET",
-        mode: "cors",
-        credentials: "include",
-      }
-    );
+    const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+    const response = await fetch(`${SERVER_URL}/api/auth/login/success`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "Access-Control-Allow-Credentials": true,
+        "Access-Control-Allow-Origin": SERVER_URL,
+      },
+    });
 
     const data = await response.json();
+
     if (data.success) {
       dispatch(setUserLoginDetails(data.user));
       await socket.emit("user_connected", data.user);

@@ -3,7 +3,7 @@ import moment from "moment";
 import { useState, useEffect } from "react";
 import { findUserReceiver, findLastMessage } from "../../utils/methods";
 import { IUser, IChat, IMessage, ISidebarProps } from "../../types";
-import { socket } from "../../config/socket";
+import socket from "../../config/socket";
 import Spin from "../Spin";
 import { selectUser } from "../../features/userSlice";
 

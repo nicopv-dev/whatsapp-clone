@@ -1,5 +1,5 @@
 import io from "socket.io-client";
 
-const SOCKET_URL = "https://whatsapp-clone-api-app-develop.herokuapp.com";
+const socket = io(import.meta.env.VITE_SERVER_URL);
 
-export const socket = io(SOCKET_URL);
+export default socket;
