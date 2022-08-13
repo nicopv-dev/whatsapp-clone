@@ -5,7 +5,7 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   server: {
     proxy: {
-      "/api": {
+      "/api/auth/login/success": {
         target: "https://whatsapp-clone-api-app-develop.herokuapp.com",
         changeOrigin: true,
         ws: true,
