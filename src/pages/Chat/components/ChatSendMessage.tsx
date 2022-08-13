@@ -57,7 +57,7 @@ export default function ChatSendMessage({
 
   const onChangeInputMessage = async (
     e: React.ChangeEvent<HTMLInputElement>
-  ): void => {
+  ): Promise<void> => {
     setInputMessage(e.target.value);
     const messageData = {
       message: inputMessage,
